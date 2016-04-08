@@ -1,0 +1,6 @@
+start on runlevel [S345]
+stop on runlevel [016]
+ 
+respawn
+instance /dev/<%= @serial_port %>
+exec /sbin/agetty <%= @serial_port %> <%= @baud_rate %> vt100-nav

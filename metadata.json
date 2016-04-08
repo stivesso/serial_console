@@ -1,0 +1,14 @@
+{
+  "name": "stivesso-serial_console",
+  "version": "0.1.0",
+  "author": "stivesso",
+  "summary": "The aim of this module is to automate the redirection of Linux System's Console Output to HP ILO Virtual Serial Port",
+  "license": "Apache-2.0",
+  "source": "https://github.com/stivesso/serial_console",
+  "project_page": "https://github.com/stivesso/serial_console",
+  "issues_url": "https://github.com/stivesso/serial_console/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+
