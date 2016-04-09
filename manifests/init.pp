@@ -56,6 +56,10 @@ class serial_console (
       serial_port   => $serial_port,
       baud_rate     => $baud_rate,
       no_rhgb_quiet => $no_rhgb_quiet,
+    } -> # and then set root account if required
+    class {'serial_console::root_on_console':
+      serial_port        => $serial_port,
+      root_login_console => $root_login_console,
     }
   } else {
     notify {'For now, serial_console is only available on Linux based System with Systemd and Upstart':}

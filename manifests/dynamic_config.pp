@@ -21,6 +21,9 @@ class serial_console::dynamic_config (
       service { $serial_port:
         ensure  => 'running',
         require => File["/etc/init/${serial_port}.conf"],
+        start   => "/sbin/initctl start ${serial_port}",
+        stop    => "/sbin/initctl stop ${serial_port}",
+        status  => "/sbin/initctl status ${serial_port}",
       }
     }
     default: {notify {"${::initsystem} is not yet supported by serial_console, Only Upstart and Systemd are supported for now":}}
