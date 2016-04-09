@@ -1,8 +1,10 @@
 # Small set of parameters that are needed by the others classes
 class serial_console::params {
 
-  $no_rhgb_quiet       = true
-  $root_login_console  = true
+  $no_rhgb_quiet           = true
+  $root_login_console      = true
+  $regular_console_enabled = true
+  $serial_primary_console  = true
 
   # By default, Virtual Machines output at ttyS0 , Oracle Physical at ttyS0
   # And the others at ttyS1 and baud_rate 115200

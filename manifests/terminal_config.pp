@@ -1,8 +1,7 @@
-# Settings Dynamic Configuration
-class serial_console::dynamic_config (
+# Settings Terminal-Related Configuration
+class serial_console::terminal_config (
   $serial_port         = $serial_console::params::serial_port,
   $baud_rate           = $serial_console::params::baud_rate,
-  $no_rhgb_quiet       = $serial_console::params::no_rhgb_quiet,
 )
 {
 
