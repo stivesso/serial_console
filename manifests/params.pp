@@ -1,7 +1,7 @@
 # Small set of parameters that are needed by the others classes
 class serial_console::params {
 
-  $rhgb_quiet          = true
+  $no_rhgb_quiet       = true
   $root_login_console  = true
 
   # By default, Virtual Machines output at ttyS0 , Oracle Physical at ttyS0

@@ -16,7 +16,7 @@ class serial_console::static_config (
     value  => $kernel_param_console,
   }
 
-  if rhgb_quiet == true {
+  if no_rhgb_quiet == true {
     kernel_parameter { 'quiet':
       ensure => absent,
     }

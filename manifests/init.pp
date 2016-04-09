@@ -1,41 +1,45 @@
 # Class: serial_console
 # ===========================
 #
-# Full description of class serial_console here.
+# Puppet module which aims to automatically configure Linux Console Redirection 
+# Be it: HP ILO VSP, Oracle Sun ILOM, Virtual Machine ttySX... )
 #
-# Parameters
-# ----------
+# Variables and Parameters
+# ------------------------
 #
-# Document parameters here.
+# $serial_port :  Serial Port
+# Specify the ttySx Port we are willing to use. 
+# By default, It is set this to ttyS1 (except for Oracle/Sun Servers where it is set to ttyS0). 
 #
-# * `sample parameter`
-# Explanation of what this parameter affects and what it defaults to.
-# e.g. "Specify one or more upstream ntp servers as an array."
+# $baud_rate : Baud Rate
+# The baud rate is the rate at which information is transferred on the Serial Port.
+# By default, it is set to 115200 (except for Oracle/Sun Servers where it is set to 9600). 
 #
-# Variables
-# ----------
+# $no_rhgb_quiet : Rhgb and Quiet
+# rhgb: (redhat graphical boot) This is a GUI mode booting screen with most of the information hidden.
+# quiet: hides the majority of boot messages before rhgb starts. 
+# These two are disabled by default (linked in the same settings)
 #
-# Here you should define a list of variables that this module would require.
-#
-# * `sample variable`
-#  Explanation of how this variable affects the function of this class and if
-#  it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#  External Node Classifier as a comma separated list of hostnames." (Note,
-#  global variables should be avoided in favor of class parameters as
-#  of Puppet 2.6.)
+# $root_login_console : Root Login Console
+# Whether the root is allowed to login on the console directly.
+# By default, this is allowed
+
 #
 # Examples
 # --------
 #
 # @example
 #    class { 'serial_console':
-#      servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
+#      serial_port        => 'ttyS1',
+#      baud_rate          => '115200',
+#      no_rhgb_quiet      => true,
+#      root_login_console => true,
 #    }
 #
 # Authors
 # -------
 #
-# Author Name <author@domain.com>
+# Steve ESSO <stivesso@gmail.com>
 #
 # Copyright
 # ---------
@@ -48,6 +52,10 @@ class serial_console (
   $no_rhgb_quiet       = $serial_console::params::no_rhgb_quiet,
   $root_login_console  = $serial_console::params::root_login_console,
 ) inherits serial_console::params {
+
+  validate_string($serial_port)
+  validate_integer($baud_rate)
+  validate_bool($no_rhgb_quiet,$root_login_console)
 
   if $::initsystem {
     class {'serial_console::dynamic_config':

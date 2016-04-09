@@ -36,7 +36,7 @@ class serial_console::dynamic_config (
       }
       exec { 're_examine_inittab':
         command     => 'init q',
-        path        => ["/sbin", "/usr/sbin", "/bin", "/usr/bin"],
+        path        => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
         refreshonly => true,
       }
     }
