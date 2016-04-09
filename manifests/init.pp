@@ -49,7 +49,7 @@ class serial_console (
   $root_login_console  = $serial_console::params::root_login_console,
 ) inherits serial_console::params {
 
-  if ($::initsystem == 'systemd') or ($::initsystem == 'upstart'){
+  if $::initsystem {
     class {'serial_console::dynamic_config':
     } -> # and then apply static configuration
     class {'serial_console::static_config':
@@ -62,7 +62,7 @@ class serial_console (
       root_login_console => $root_login_console,
     }
   } else {
-    notify {'For now, serial_console is only available on Linux based System with Systemd and Upstart':}
+    notify {'For now, serial_console is only available on Linux based System':}
   }
 
 }
