@@ -1,6 +1,6 @@
 {
   "name": "stivesso-serial_console",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "author": "stivesso",
   "summary": "Linux Serial Console Redirection (HP ILO VSP/Oracle Sun ILOM/VM ttySX... )",
   "license": "Apache-2.0",
