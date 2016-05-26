@@ -10,7 +10,6 @@
     * [Parameters (and default values)](#parameters)
     * [Sample Usage](#sample-usage)
 4. [Limitations and Known Issues](#limitations-and-known-issues)
-    * [Note for some UEFI Systems](#note-for-some-uefi-systems)
 5. [Development - Guide for contributing to the module](#development)
 6. [TODO](#TODO)
 7. [Contributors](#contributors)
@@ -118,11 +117,6 @@ serial_console::serial_primary_console:    true
 ```
 
 ## Limitations and Known Issues
-#### Note for some UEFI Systems
-
-On UEFI Systems, the module used for grub configuration may not be able to locate the Grub configuration file and will send the following error:  
-_Could not evaluate: Cannot find grub.cfg location to use with grub-mkconfig_  
-A PR has already been submitted to correct that little Issue, but while waiting, the workaround is to add _"/etc/grub2-efi.cfg"_ to the array on line 151 of _augeasproviders_grub/lib/puppet/provider/kernel_parameter/grub2.rb_ ([more details here](https://github.com/hercules-team/augeasproviders_grub/pull/21/files))
 
 ## Development
 I happily accept bug reports and pull requests via github,  
