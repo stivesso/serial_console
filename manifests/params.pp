@@ -11,7 +11,7 @@ class serial_console::params {
   if $::is_virtual {
     $serial_port       = 'ttyS0'
     $baud_rate         = '115200'
-  } elsif ($::dmi != undef) and ($::dmi['manufacturer'] =~ /Oracle/) {
+  } elsif ($::dmi != undef) and ($::dmi['manufacturer'] =~ /Oracle|SUN/) {
     $serial_port       = 'ttyS0'
     $baud_rate         = '9600'
   } else {
