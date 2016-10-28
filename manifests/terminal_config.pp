@@ -30,7 +30,7 @@ class serial_console::terminal_config (
         ensure => present,
         path   => '/etc/inittab',
         line   => "S1:2345:respawn:/sbin/agetty ${baud_rate} ${serial_port} vt100",
-        match  => "${serial_port}|agetty",
+        match  => "^[^#].*agetty.*${serial_port}",
         notify => Exec['re_examine_inittab'],
       }
       exec { 're_examine_inittab':
