@@ -1,138 +1,81 @@
+
 # serial_console
+
+Welcome to your new module. A short overview of the generated parts can be found in the PDK documentation at https://docs.puppet.com/pdk/1.0/pdk_generating_modules.html#module-contents .
+
+Below you'll find the default README template ready for some content.
+
+
+
+
+
+
 
 #### Table of Contents
 
-1. [Module Description - What the module does and why it is useful](#module-description)
+1. [Description](#description)
 2. [Setup - The basics of getting started with serial_console](#setup)
     * [What serial_console affects](#what-serial_console-affects)
     * [Setup requirements](#setup-requirements)
+    * [Beginning with serial_console](#beginning-with-serial_console)
 3. [Usage - Configuration options and additional functionality](#usage)
-    * [Parameters (and default values)](#parameters)
-    * [Sample Usage](#sample-usage)
-4. [Limitations and Known Issues](#limitations-and-known-issues)
-5. [Development - Guide for contributing to the module](#development)
-6. [TODO](#TODO)
-7. [Contributors](#contributors)
+4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+5. [Limitations - OS compatibility, etc.](#limitations)
+6. [Development - Guide for contributing to the module](#development)
 
-## Module Description
+## Description
 
-The serial_console module automates the configuration of Linux Systems to have both their Console Outputs and the ability to log on to the system via the serial port. 
+Start with a one- or two-sentence summary of what the module does and/or what problem it solves. This is your 30-second elevator pitch for your module. Consider including OS/Puppet version it works with.       
 
-With such configuration in place, Management and Administration of Linux Systems through most of the Out of Band Management Platforms Console (HP ILO/vsp, ORACLE SUN ALOM/Console, DELL DRAC/Console, Virtual Machine ttySX...) is greatly simplified.
-
-Many options are available for the customization of that configuration in order to fit your environment's needs. 
+You can give more descriptive information in a second paragraph. This paragraph should answer the questions: "What does this module *do*?" and "Why would I use it?" If your module has a range of functionality (installation, configuration, management, etc.), this is the time to mention it.
 
 ## Setup
 
-From Puppet Forge,
-```sh
-puppet module install stivesso-serial_console
-```
-From Github,
-```sh
-git clone https://github.com/stivesso/serial_console
-```
-### What serial_console affects
+### What serial_console affects **OPTIONAL**
 
-* GRUB Configuration (Kernel parameters)  
-_Edits Grub Configuration to add or remove Console parameters to the Kernel Parameters_
-* Init (Sysvinit, Upstart or Systemd) Configuration  
-_Configure Init Service (Sysvinit, Upstart or Systemd) to support serial console logins_
+If it's obvious what your module touches, you can skip this section. For example, folks can probably figure out that your mysql_instance module affects their MySQL instances.
 
-### Setup Requirements
+If there's more that they should know about, though, this is the place to mention:
 
-Serial_console requires:  
+* Files, packages, services, or operations that the module will alter, impact, or execute.
+* Dependencies that your module automatically installs.
+* Warnings or other important notices.
 
-- pluginsync = true (Puppet Configuration)  
-- puppetlabs/stdlib (>= 4.9.0)
-- herculesteam/augeasproviders_grub (>= 2.3.0)
+### Setup Requirements **OPTIONAL**
+
+If your module requires anything extra before setting up (pluginsync enabled, another module, etc.), mention it here. 
+  
+If your most recent release breaks compatibility or requires particular steps for upgrading, you might want to include an additional "Upgrading" section here.
+
+### Beginning with serial_console  
+
+The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
 
 ## Usage
 
-### Parameters
+This section is where you describe how to customize, configure, and do the fancy stuff with your module here. It's especially helpful if you include usage examples and code samples for doing things with your module.
 
-There are 06 main parameters used to control the Serial Console behaviours: 
+## Reference
 
-**`serial_port`** :  _Serial Port_  
-String that specifies the Serial Port to use (ttySx). 
+Users need a complete list of your module's classes, types, defined types providers, facts, and functions, along with the parameters for each. You can provide this list either via Puppet Strings code comments or as a complete list in the README Reference section.
 
-- _default:_   
--- _**ttyS1**_ for Physical Servers (except Oracle/Sun Servers where the default is set to _**ttyS0**_).  
--- _**ttyS0**_ for Virtual Servers
+* If you are using Puppet Strings code comments, this Reference section should include Strings information so that your users know how to access your documentation.
 
-**`baud_rate`** : _Baud Rate_  
-Integer to set the baud rate (rate at which information is transferred) of the Serial Port.
-- _default:_ _**115200**_ except for Oracle/Sun Servers where the default is set to _**9600**_.
+* If you are not using Puppet Strings, include a list of all of your classes, defined types, and so on, along with their parameters. Each element in this listing should include:
 
-**`no_rhgb_quiet`** : _Rhgb and Quiet_  
-Boolean to set whether we want to disable rhgb and quiet mode or not.
-- _default:_ _**true**_ (disabled)
+  * The data type, if applicable.
+  * A description of what the element does.
+  * Valid values, if the data type doesn't make it obvious.
+  * Default value, if any.
 
-_rhgb: (RedHat graphical boot) This is a GUI mode booting screen with most of the information hidden._
-_quiet: hides the majority of boot messages before rhgb starts. 
-These two are disabled by default (linked in the same settings)_
+## Limitations
 
-**`root_login_console`** : _Root Login Console_    
-Boolean to determine whether the root is allowed to login on the console directly or not.
-- _default:_ _**true**_ (Root Login through Serial Console allowed)
-
-**`regular_console_enabled`** : _Regular Console (tty0)_  
-Boolean to determine whether the Regular Console (tty0) is needed or not,
-- _default:_ _**true**_ (needed and enabled as Secondary Console, this can be switch to Primary console with the _serial_primary_console_ described below) 
-
-_Secondary Console means that the console is available for Login, but Init script messages are not being sent to that console (they are only sent to the primary console)_
-
-**`serial_primary_console`** : _Set Serial As primary Console_   
-Boolean to determine whether the serial is the primary console or not (this setting only makes sense when the regular console is enabled)
-- _default:_ _**true**_ (Serial Console set as primary console)
-
-_Again, Init script messages are sent only to the primary console, the secondary console has only the Login ability_
-
-### Sample Usage
-
-To accept default class parameters (the ones described above):
-```sh
-include serial_console
-```
-To modify some of the default settings,
-```sh
-    class { 'serial_console':
-      serial_port              => 'ttyS1',
-      baud_rate                => '115200',
-      no_rhgb_quiet            => true,
-      root_login_console       => true,
-      regular_console_enabled  => true,
-      serial_primary_console   => true,
-    }
-```
-The module also supports (and encourages) configuration through hiera. Below is an example of such configuration:
-```yaml
----
-serial_console::serial_port:               "ttyS1"
-serial_console::baud_rate:                 "115200"
-serial_console::no_rhgb_quiet:             true
-serial_console::root_login_console:        true
-serial_console::regular_console_enabled:   true
-serial_console::serial_primary_console:    true
-```
-
-## Limitations and Known Issues
+This is where you list OS compatibility, version compatibility, etc. If there are Known Issues, you might want to include them under their own heading here.
 
 ## Development
-I happily accept bug reports and pull requests via github,  
-https://github.com/stivesso/serial_console
 
-- Fork it
-- Create a feature branch
-- Write a failing test
-- Write the code to make that test pass
-- Refactor the code
-- Submit a pull request
+Since your module is awesome, other users will want to play with it. Let them know what the ground rules for contributing are.
 
-## TODO
+## Release Notes/Contributors/Etc. **Optional**
 
-- Add GRUB Full Control from Serial Console
-
-## Contributors
-
-- The module is written and being maintained by: [stivesso](https://github.com/stivesso) 
+If you aren't using changelog, put your release notes here (though you should consider using changelog). You can also add any additional sections you feel are necessary or important to include here. Please use the `## ` header. 

@@ -63,35 +63,23 @@
 # Copyright 2016 Your name here, unless otherwise noted.
 #
 class serial_console (
-  $serial_port             = $serial_console::params::serial_port,
-  $baud_rate               = $serial_console::params::baud_rate,
-  $no_rhgb_quiet           = $serial_console::params::no_rhgb_quiet,
-  $root_login_console      = $serial_console::params::root_login_console,
-  $regular_console_enabled = $serial_console::params::regular_console_enabled,
-  $serial_primary_console  = $serial_console::params::serial_primary_console,
-) inherits serial_console::params {
-
-  validate_string($serial_port)
-  validate_integer($baud_rate)
-  validate_bool($no_rhgb_quiet,$root_login_console)
-  validate_bool($regular_console_enabled, $serial_primary_console)
+  String                   $serial_port,
+  Variant[Integer, String] $baud_rate,
+  Boolean                  $no_rhgb_quiet,
+  Boolean                  $root_login_console,
+  Boolean                  $regular_console_enabled,
+  Boolean                  $serial_primary_console,
+) {
 
   if $::initsystem {
-    class {'serial_console::terminal_config':
-      serial_port             => $serial_port,
-      baud_rate               => $baud_rate,
-    } -> # and then apply static configuration
-    class {'serial_console::kernel_config':
-      serial_port             => $serial_port,
-      baud_rate               => $baud_rate,
-      no_rhgb_quiet           => $no_rhgb_quiet,
-      regular_console_enabled => $regular_console_enabled,
-      serial_primary_console  => $serial_primary_console,
-    } -> # and then set root account if required
-    class {'serial_console::root_on_console':
-      serial_port        => $serial_port,
-      root_login_console => $root_login_console,
-    }
+    contain serial_console::terminal_config
+    contain serial_console::kernel_config
+    contain serial_console::root_on_console
+
+    Class['serial_console::terminal_config']
+    -> Class['serial_console::kernel_config']
+    -> Class['serial_console::root_on_console']
+
   } else {
     notify {'For now, serial_console is only available on Linux based System':}
   }

@@ -1,0 +1,3 @@
+---
+serial_console::serial_port:  'ttyS0'
+serial_console::baud_rate:    '115200'

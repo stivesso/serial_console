@@ -1,0 +1,15 @@
+---
+version: 5
+defaults:
+  datadir: data
+  data_hash: yaml_data
+
+hierarchy:
+  - name: 'Virtual System'
+    path: 'virtual/%{facts.is_virtual}.yaml'
+
+  - name: 'DMI Manufacturer'
+    path: 'dmi/manufacturer/%{facts.dmi.manufacturer}.yaml'
+
+  - name: 'common'
+    path: 'common.yaml'
