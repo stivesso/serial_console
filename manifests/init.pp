@@ -81,7 +81,7 @@ class serial_console (
     -> Class['serial_console::root_on_console']
 
   } else {
-    notify {'For now, serial_console is only available on Linux based System':}
+    notify {'For now, serial_console is only available on Supported Linux based System':}
   }
 
 }
