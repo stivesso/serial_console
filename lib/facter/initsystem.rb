@@ -59,7 +59,7 @@ def initsystem_curated
       when '5'
         'sysvinit'
       when '6'
-        'sysvinit' # RHEL 6 also has upstart, but the service tools don't handle it right. Stick to sysvinit here.
+        'upstart'
       when '7'
         'systemd'
       else
