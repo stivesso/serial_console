@@ -3,9 +3,7 @@
 # detection.
 # From https://github.com/jethrocarr/puppet-initfact/blob/master/lib/facter/initsystem.rb
 
-
 def initsystem_lookup
-
   # Whilst we include logic for automatically selecting the initsystem based
   # on what is present on the system, it doesn't always work 100% since there
   # are some distributions with multiple init systems present, and it's not
@@ -19,17 +17,22 @@ def initsystem_lookup
     # We don't have a specific match for this system, so let's check for
     # various known platforms.
 
-    automated_check = check_init
-    return automated_check
+    # TODO: this could be a lot more sophisticated, patches welcome.
+
+    if File.exist?('/bin/systemctl')
+      'systemd'
+    elsif File.exist?('/sbin/upstart-local-bridge')
+      'upstart'
+    else
+      # sysvinit is the safest default to fall back to, even many distributions
+      # with other init systems maintain some compatibility.
+      'sysvinit'
+    end
 
   else
-  
-    return initsystem
-
+    initsystem
   end
-
 end
-
 
 def initsystem_curated
   case Facter.value(:osfamily)
@@ -56,7 +59,7 @@ def initsystem_curated
       when '5'
         'sysvinit'
       when '6'
-        check_init # As there is some doubt here let us check
+        'sysvinit' # RHEL 6 also has upstart, but the service tools don't handle it right. Stick to sysvinit here.
       when '7'
         'systemd'
       else
@@ -75,6 +78,8 @@ def initsystem_curated
       when '14.10'
         'upstart'
       when '15.04'
+        'systemd'
+      when '16.04'
         'systemd'
       else
         '' # No match, fall back to auto-resolving
@@ -97,14 +102,7 @@ def initsystem_curated
     end
 
   when 'FreeBSD'
-    case Facter.value(:operatingsystemmajrelease)
-    when '9'
-      'bsdinit'
-    when '10'
-      'bsdinit'
-    else
-      'bsdinit' # don't see them being likely to pickup systemd anytime soon
-    end
+    'bsdinit'
 
   when 'Darwin'
     'launchd'
@@ -114,34 +112,10 @@ def initsystem_curated
   end
 end
 
-def check_init
-
-  # Whilst we include logic for automatically selecting the initsystem based
-  # on what is present on the system, it doesn't always work 100% since there
-  # are some distributions with multiple init systems present, and it's not
-  # always the case of the most modern init system being the right one to use.
-  #
-  # Hence, here we do a lookup against our curated list for a specific
-  # configured match:
-
-  if initversion = Facter::Util::Resolution.exec("cat /proc/1/comm") \
-    and initversion =~ /systemd/
-    return 'systemd'
-  elsif initversion = Facter::Util::Resolution.exec("/sbin/init --version | grep upstart") \
-    and initversion =~ /upstart/
-    return 'upstart'
-  else
-    # sysvinit is the safest default to fall back to, even many distributions
-    # with other init systems maintain some compatibility.
-    return 'sysvinit'
-  end
-
-end
-
 begin
   Facter.add('initsystem') { setcode { initsystem_lookup } }
 rescue => e
-  puts "An unexpected issue occured when trying to resolve the init system fact."
+  puts 'An unexpected issue occured when trying to resolve the init system fact.'
   raise e
 end
 
