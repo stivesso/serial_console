@@ -3,5 +3,5 @@ serial_console::no_rhgb_quiet:           true
 serial_console::root_login_console:      true
 serial_console::regular_console_enabled: true
 serial_console::serial_primary_console:  true
-serial_console::serial_port:             'ttyS0'
+serial_console::serial_port:             'ttyS1'
 serial_console::baud_rate:               '9600'
