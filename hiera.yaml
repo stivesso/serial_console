@@ -1,15 +1,15 @@
 ---
-version: 5
-defaults:
-  datadir: data
-  data_hash: yaml_data
-
+version: 4
+datadir: data
 hierarchy:
   - name: 'Virtual System'
     path: 'virtual/%{facts.is_virtual}.yaml'
+    backend: yaml
 
   - name: 'DMI Manufacturer'
     path: 'dmi/manufacturer/%{facts.dmi.manufacturer}.yaml'
+    backend: yaml
 
   - name: 'common'
     path: 'common.yaml'
+    backend: yaml
