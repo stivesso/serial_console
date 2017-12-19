@@ -1,5 +1,6 @@
 # serial_console
-[![Build Status](https://travis-ci.org/stivesso/serial_console.svg?branch=master)](https://travis-ci.org/stivesso/serial_console)
+[![Build Status](https://travis-ci.org/stivesso/serial_console.svg?branch=dev)](https://travis-ci.org/stivesso/serial_console)
+[![Coverage Status](https://coveralls.io/repos/github/stivesso/serial_console/badge.svg?branch=dev)](https://coveralls.io/github/stivesso/serial_console?branch=dev)
 #### Table of Contents
 
 1. [Module Description - What the module does and why it is useful](#module-description)
