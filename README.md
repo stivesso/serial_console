@@ -1,5 +1,5 @@
 # serial_console
-
+[![Build Status](https://travis-ci.org/stivesso/serial_console.svg?branch=master)](https://travis-ci.org/stivesso/serial_console)
 #### Table of Contents
 
 1. [Module Description - What the module does and why it is useful](#module-description)
